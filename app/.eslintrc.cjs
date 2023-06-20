@@ -26,7 +26,7 @@ module.exports = {
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "project": ["./app/tsconfig.json"],
+        "project": ["tsconfig.json"],
     },
     "ignorePatterns": ["vite.config.ts", ".eslintrc.cjs"],
     "settings": {
