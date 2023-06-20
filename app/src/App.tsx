@@ -80,10 +80,11 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!mapRef.current) return; // wait for map to initialize
     mapRef.current.on('move', () => {
-      setLng(mapRef.current.getCenter().lng.toFixed(4));
-      setLat(mapRef.current.getCenter().lat.toFixed(4));
-      setZoom(mapRef.current.getZoom().toFixed(2));
-      setPitch(mapRef.current.getPitch().toFixed(2));
+      if (!mapRef.current) return;
+      setLng(mapRef.current.getCenter().lng);
+      setLat(mapRef.current.getCenter().lat);
+      setZoom(mapRef.current.getZoom());
+      setPitch(mapRef.current.getPitch());
     });
   });
 
