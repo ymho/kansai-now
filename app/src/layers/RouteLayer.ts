@@ -17,7 +17,7 @@ const RouteLayer = new GeoJsonLayer({
     getFillColor: (d) => d.properties?.station_color || [255, 0, 0, 150],
     getLineColor: (d) => d.properties?.line_color || [255, 0, 0, 150],
     getPointRadius: 10,
-    getLineWidth: 50,
+    getLineWidth: 10,
     // beforeId: 'layer_id'
 });
 

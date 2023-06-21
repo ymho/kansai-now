@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loade
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
 import { MapboxOverlay } from '@deck.gl/mapbox/typed';
 import { Threebox, THREE } from 'threebox-plugin';
+// import * as turf from "@turf/turf"
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import "threebox-plugin/dist/threebox.css";
@@ -20,6 +21,7 @@ const overlay = new MapboxOverlay({
 const App: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map>();
+  const cubeRef = useRef<any>();
 
   const [lng, setLng] = useState(135.495951);
   const [lat, setLat] = useState(34.702485);
@@ -61,16 +63,22 @@ const App: React.FC = () => {
           window.tb = new Threebox(
             map,
             gl,
-            { defaultLights: true }
+            { defaultLights: true,
+              // realSunlight : true
+            }
           );
           const geometry = new THREE.BoxGeometry(30, 90, 30);
-          const cube = window.tb.Object3D({
-            obj: new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x660000 })),
+          const material = new THREE.MeshPhongMaterial( {color: 0x990000} );
+          cubeRef.current = window.tb.Object3D({
+            obj: new THREE.Mesh(geometry, material),
             units: 'meters'
-          }).setCoords([135.495951, 34.702485]);;
-          window.tb.add(cube);
+          })
+          cubeRef.current.rotation.z = 2
+          cubeRef.current.setCoords([135.495951, 34.702485]);
+          window.tb.add(cubeRef.current);
         },
         render: () => {
+          // window.tb.setSunlight(new Date(), [135.495951, 34.702485]);
           window.tb.update();
         }
       })
@@ -85,13 +93,14 @@ const App: React.FC = () => {
       setLat(mapRef.current.getCenter().lat);
       setZoom(mapRef.current.getZoom());
       setPitch(mapRef.current.getPitch());
+      cubeRef.current.setCoords([mapRef.current.getCenter().lng, mapRef.current.getCenter().lat]);
     });
   });
 
   return (
   <div>
     <div className="sidebar">
-      Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+      Lng: {lng} | Lat: {lat} | Z: {zoom} |
     </div>
     <div ref={mapContainer} className="map-container" />
   </div>
