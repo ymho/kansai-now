@@ -100,22 +100,6 @@ const App: React.FC = () => {
   const [index, setIndex] = useState(0);
   const refIndex = useRef(index)
 
-//   function calculateAngle(lat1:number, lon1:number, lat2:number, lon2:number) {
-//     // const dLat = (lat2 - lat1) * Math.PI / 180;
-//     const dLon = (lon2 - lon1) * Math.PI / 180;
-
-//     const y = Math.sin(dLon) * Math.cos(lat2);
-//     const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-
-//     const angleRad = Math.atan2(y, x);
-//     const angleDeg = angleRad * 180 / Math.PI;
-
-//     // Convert to positive angle if needed
-//     const positiveAngle = angleDeg >= 0 ? angleDeg : 360 + angleDeg;
-
-//     return positiveAngle;
-// }
-
   useEffect(() => {
     if (mapRef.current || !mapContainer.current) return;
     mapRef.current = new mapboxgl.Map({
@@ -164,18 +148,10 @@ const App: React.FC = () => {
             anchor: 'center',
             // bbox: true,
           })
-          // cubeRef.current.setRotation({x: 0, y: 0, z: refModelAngle.current + Math.PI/2})
           cubeRef.current.setCoords([posLng, posLat]);
-          // cubeRef.current.set(
-          //   {
-          //     'coords': [posLng, posLat],
-          //     'rotation': {x: 0, y: 0, z: 0}
-          //   }
-          // )
           window.tb.add(cubeRef.current);
         },
         render: () => {
-          // window.tb.setSunlight(new Date(), [135.495951, 34.702485]);
           window.tb.update();
         }
       })
@@ -203,32 +179,11 @@ const App: React.FC = () => {
   useEffect(() => {
     setInterval(() => {
       if (!cubeRef.current) return;
-
       refIndex.current += 1;
-      // [refPosLng.current, refPosLat.current] = turf.along(coords, refIndex.current, {units: 'meters'}).geometry.coordinates;
       [refPosLng.current, refPosLat.current] = coords[refIndex.current % coords.length];
       [refPosPastLng.current, refPosPastLat.current] = coords[(refIndex.current % coords.length)-1];
-
       refModelAngle.current = turf.bearing([refPosPastLng.current, refPosPastLat.current],[refPosLng.current, refPosLat.current]) * Math.PI/180;
-      // console.log(chunk)
-      // console.log(Math.abs(cubeRef.current.rotation.z - refModelAngle.current * Math.PI/180))
       cubeRef.current.rotation.z = -refModelAngle.current
-      // if (cubeRef.current.rotation.z === 0 || Math.abs(cubeRef.current.rotation.z - refModelAngle.current) < Math.PI){
-      //   // cubeRef.current.setRotation({x: 0, y: 0, z: refModelAngle.current + Math.PI/2})
-      //   cubeRef.current.rotation.z = -refModelAngle.current
-      //   // cubeRef.current.rotation.z = 0
-      // }
-      // cubeRef.current.rotation.z = refIndex.current * 0.1
-      // cubeRef.current.set(
-      //   {
-      //     'coords': [refPosLng.current, refPosLat.current],
-      //     // 'rotation': {x: 0, y: 0, z: refModelAngle.current+Math.PI/2}
-      //   }
-      // )
-      // console.log(cubeRef.current.rotation.z - refModelAngle.current * Math.PI/180)
-      // console.log(`before${[refPosLng.current, refPosLat.current]}`)
-      // console.log(`after${[refPosLng.current, refPosLat.current]}`)
-      // console.log(cubeRef.current.rotation.z)
       cubeRef.current.setCoords([refPosLng.current, refPosLat.current]);
     }, 1000);
   }, []);
