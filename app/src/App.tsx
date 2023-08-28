@@ -11,7 +11,7 @@ import "./App.css"
 
 import RouteLayer from "./layers/RouteLayer"
 
-import data from "./data/Railroad.json"
+// import data from "./data/Railroad.json"
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
@@ -19,40 +19,25 @@ const overlay = new MapboxOverlay({
   interleaved: true,
   layers: [RouteLayer]
 });
-// const coords = [
-//   [
-//     135.52163,
-//     34.7052
-//   ],
-//   [
-//     135.52143,
-//     34.70517
-//   ],
-//   [
-//     135.52109,
-//     34.70509
-//   ],
-//   [
-//     135.52069,
-//     34.70496
-//   ],
-//   [
-//     135.52029,
-//     34.70483
-//   ]
-// ]
-// const chunk = turf.lineChunk(coords, 500, { units: 'meters' }) as FeatureCollection;
-// console.log(chunk)
-// const length = turf.length(coords, {units: 'meters'});
 
-const multiLineString = turf.multiLineString(data.features[38].geometry.coordinates)
-const flattenedCoordinates: number[][] = [];
+const coords = 	[
+  [
+    135.50292,
+    34.64962
+  ],
+  [
+    135.50066,
+    34.65019
+  ]
+]
+// const multiLineString = turf.multiLineString(data)
+// const flattenedCoordinates: number[][] = [];
 
-turf.coordEach(multiLineString, (coord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) => {
-    flattenedCoordinates.push(coord);
-});
+// turf.coordEach(multiLineString, (coord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) => {
+//     flattenedCoordinates.push(coord);
+// });
 
-const coords = flattenedCoordinates
+// const coords = flattenedCoordinates
 
 const App: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
